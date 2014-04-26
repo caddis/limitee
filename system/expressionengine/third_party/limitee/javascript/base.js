@@ -1,36 +1,39 @@
 (function($) {
 	$.fn.extend({
 		limiter: function(limit, type) {
-			var $this = $(this),
-				$text = $('<div class="limitee"></div>');
+			var $this = $(this);
 
-			$text.insertAfter($this)
+			if ($this.length) {
+				var $text = $('<div class="limitee"></div>');
 
-			$this.on('keyup focus', function() {
-				setCount(this);
-			});
+				$text.insertAfter($this)
 
-			function setCount() {
-				var chars = $this.val().length;
+				$this.on('keyup focus', function() {
+					setCount(this);
+				});
 
-				if (chars > limit) {
-					if (type == 2) {
-						$this.val($this.val().substr(0, limit));
-						chars = limit;
+				function setCount() {
+					var chars = $this.val().length;
+
+					if (chars > limit) {
+						if (type == 2) {
+							$this.val($this.val().substr(0, limit));
+							chars = limit;
+						} else {
+							$text.addClass('limitee-over');
+						}
 					} else {
-						$text.addClass('limitee-over');
+						$text.removeClass('limitee-over');
 					}
-				} else {
-					$text.removeClass('limitee-over');
+
+					var remaining = (limit - chars),
+						output = remaining + '/' + limit + ' characters remaining';
+
+					$text.html(output);
 				}
 
-				var remaining = (limit - chars),
-					output = remaining + '/' + limit + ' characters remaining';
-
-				$text.html(output);
+				setCount();
 			}
-
-			setCount();
 		}
 	});
 })(jQuery);
