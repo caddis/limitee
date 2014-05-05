@@ -45,7 +45,7 @@ foreach ($channel_fields as $row) {
 				. '<td>' . form_dropdown('rules[group_title_' . $row->group_id . '][type]', array('1' => 'Soft', '2' => 'Hard'), $title_type) . '</td>'
 			. '</tr>';
 
-		$group_name = $row->group_name;
+		$group = $row->group_name;
 	}
 
 	echo '<tr>'
