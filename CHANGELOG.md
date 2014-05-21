@@ -1,3 +1,9 @@
+# 1.0.2
+
+2014-05-21
+
+- Resolved issue where title counts would be duplicated across channels, as a result titles are now related to channels and not field groups. Any title settings will have to be reset after updating.
+
 # 1.0.1
 
 2014-05-05

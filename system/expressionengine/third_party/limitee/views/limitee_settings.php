@@ -26,9 +26,9 @@ foreach ($channel_fields as $row) {
 		$title_max = '';
 		$title_type = '1';
 
-		if (isset($settings['rules']) and isset($settings['rules']['group_title_' . $row->group_id])) {
-			$title_max = $settings['rules']['group_title_' . $row->group_id]['max'];
-			$title_type = $settings['rules']['group_title_' . $row->group_id]['type'];
+		if (isset($settings['rules']) and isset($settings['rules']['group_title_' . $row->channel_id])) {
+			$title_max = $settings['rules']['group_title_' . $row->channel_id]['max'];
+			$title_type = $settings['rules']['group_title_' . $row->channel_id]['type'];
 		}
 
 		echo '<tr>'
@@ -41,18 +41,20 @@ foreach ($channel_fields as $row) {
 			. '</tr>'
 			. '<tr>'
 				. '<td>Title</td>'
-				. '<td>' . form_input(array('type' => 'number', 'name' => 'rules[group_title_' . $row->group_id . '][max]', 'value' => $title_max, 'style' => 'width:60px')) . '&nbsp; (' . ee()->lang->line('limit_label') . ': 100)' . '</td>'
-				. '<td>' . form_dropdown('rules[group_title_' . $row->group_id . '][type]', array('1' => 'Soft', '2' => 'Hard'), $title_type) . '</td>'
+				. '<td>' . form_input(array('type' => 'number', 'name' => 'rules[group_title_' . $row->channel_id . '][max]', 'value' => $title_max, 'style' => 'width:60px')) . '&nbsp; (' . ee()->lang->line('limit_label') . ': 100)' . '</td>'
+				. '<td>' . form_dropdown('rules[group_title_' . $row->channel_id . '][type]', array('1' => 'Soft', '2' => 'Hard'), $title_type) . '</td>'
 			. '</tr>';
 
 		$group = $row->group_name;
 	}
 
-	echo '<tr>'
-			. '<td>' . $row->field_label . '</td>'
-			. '<td>' . form_input(array('type' => 'number', 'name' => 'rules[' . $row->field_id . '][max]', 'value' => $max, 'style' => 'width:60px')) . (($row->field_type !== 'textarea') ? ('&nbsp; (' . ee()->lang->line('limit_label') . ': ' . $row->field_maxl . ')') : '') . '</td>'
-			. '<td>' . form_dropdown('rules[' . $row->field_id . '][type]', array('1' => 'Soft', '2' => 'Hard'), $type) . '</td>'
-		. '</tr>';
+	if ($row->field_type == 'text' OR $row->field_type == 'textarea') {
+		echo '<tr>'
+				. '<td>' . $row->field_label . '</td>'
+				. '<td>' . form_input(array('type' => 'number', 'name' => 'rules[' . $row->field_id . '][max]', 'value' => $max, 'style' => 'width:60px')) . (($row->field_type !== 'textarea') ? ('&nbsp; (' . ee()->lang->line('limit_label') . ': ' . $row->field_maxl . ')') : '') . '</td>'
+				. '<td>' . form_dropdown('rules[' . $row->field_id . '][type]', array('1' => 'Soft', '2' => 'Hard'), $type) . '</td>'
+			. '</tr>';
+	}
 }
 
 ?>

@@ -15,7 +15,7 @@ class Limitee_ext {
 	public $name = LIMITEE_NAME;
 	public $version = LIMITEE_VER;
 	public $description = LIMITEE_DESC;
-	public $docs_url = '';
+	public $docs_url = LIMITEE_DOCS;
 	public $settings_exist	= 'y';
 	public $settings = array();
 
@@ -137,12 +137,14 @@ class Limitee_ext {
 
 			$count_settings = $this->settings[$this->site_id]['rules'];
 
+			$channel_id = isset($data['channel_id']) ? $data['channel_id'] : $_GET['channel_id'];
+
 			foreach ($count_settings as $key => $val) {
 				$max = $val['max'];
 				$type = $val['type'];
 
 				if ($max !== '') {
-					$selector = (substr($key, 0, 12) == 'group_title_') ? '"title"' : '"field_id_' . $key . '"';
+					$selector = ($key == 'group_title_' . $channel_id) ? '"title"' : '"field_id_' . $key . '"';
 
 					$js .= '$(\'[name=' . $selector . ']\').limiter(' . $max . ',' . $type . ')' . "\n";
 				}
