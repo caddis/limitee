@@ -1,6 +1,6 @@
 # Limitee 1.0.2
 
-Limit ExpressionEngine titles, text input field types, and textarea field types to a specific character count, with a counter to let you know how many characters are remaining. Our thanks to [MD Character Count] for the inspriation behind this add-on.
+Limit ExpressionEngine titles, text input field types, and textarea field types to a specific character count, with a counter to let you know how many characters are remaining. Our thanks to [MD Character Count] for the inspiration behind this add-on.
 
 [MD Character Count]: http://devot-ee.com/add-ons/md-character-count
 
