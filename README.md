@@ -10,7 +10,7 @@ To use, extract and put the limitee directory in your system third_party directo
 
 To set up character limits, click on Limitee's settings from the ExpressionEngine extensions page. This will show you a list of your channels, and the fields available to those channels that are eligible for character count and limiting.
 
-If the field is a Title field, Limitee will display in parentheses what ExpressionEngine’s title character limit is set to.
+If the field is a title field, Limitee will display in parentheses what ExpressionEngine’s title character limit is set to.
 
 The same applies to the "text input" field type. The limit you have set on that field in the field settings will be shown in parentheses.
 
