@@ -22,6 +22,8 @@ class Limitee_model extends CI_Model {
 			->join('field_groups FG', 'FG.group_id = C.field_group')
 			->join('channel_fields CF', 'FG.group_id = CF.group_id', 'right')
 			->where('C.site_id', $site_id)
+			->group_by('CF.field_id')
+			->order_by('FG.group_name ASC, CF.field_label ASC')
 			->get();
 
 		return $results->result();
