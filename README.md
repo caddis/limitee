@@ -1,4 +1,4 @@
-# Limitee 1.0.3
+# Limitee 1.0.4
 
 Limit ExpressionEngine titles, text input field types, and textarea field types to a specific character count, with a counter to let you know how many characters are remaining. Our thanks to [MD Character Count] for the inspiration behind this add-on.
 

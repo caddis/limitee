@@ -1,3 +1,9 @@
+# 1.0.4
+
+2015-07-23
+
+- Fixed a bug where PHP errors would be shown on the publish page if no settings existed
+
 # 1.0.3
 
 2014-06-01
