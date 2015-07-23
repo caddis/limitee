@@ -10,7 +10,7 @@
 
 include(PATH_THIRD . 'limitee/config.php');
 
-class Limitee_ext {  
+class Limitee_ext {
 
 	public $name = LIMITEE_NAME;
 	public $version = LIMITEE_VER;
@@ -20,7 +20,7 @@ class Limitee_ext {
 	public $settings = array();
 
 	private $site_id;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -126,6 +126,10 @@ class Limitee_ext {
 	*/
 	function publish_form_entry_data($data)
 	{
+		if (! isset($this->settings[$this->site_id])) {
+			return;
+		}
+
 		ee()->load->helper('array');
 		ee()->cp->load_package_js('base');
 
