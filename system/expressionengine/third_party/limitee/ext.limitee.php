@@ -127,7 +127,7 @@ class Limitee_ext {
 	function publish_form_entry_data($data)
 	{
 		if (! isset($this->settings[$this->site_id])) {
-			return;
+			return $data;
 		}
 
 		ee()->load->helper('array');

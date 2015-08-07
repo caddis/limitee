@@ -1,3 +1,9 @@
+# 1.0.5
+
+2015-08-07
+
+- Fixed a bug where editing an entry would return an empty publish form if no settings were available for the channel
+
 # 1.0.4
 
 2015-07-23
