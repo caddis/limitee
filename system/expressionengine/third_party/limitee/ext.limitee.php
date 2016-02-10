@@ -5,13 +5,13 @@
  *
  * @package Limitee
  * @author  Caddis
- * @link    http://www.caddis.co
+ * @link    https://www.caddis.co
  */
 
 include(PATH_THIRD . 'limitee/config.php');
 
-class Limitee_ext {
-
+class Limitee_ext
+{
 	public $name = LIMITEE_NAME;
 	public $version = LIMITEE_VER;
 	public $description = LIMITEE_DESC;
@@ -24,11 +24,9 @@ class Limitee_ext {
 	/**
 	 * Constructor
 	 *
-	 * @param  mixed Settings array or empty string if none exist
-	 * @return void
+	 * @param  mixed $settings
 	 */
-	public function __construct($settings = array())
-	{
+	public function __construct($settings = array()) {
 		$this->settings = $settings;
 		$this->site_id = ee()->config->item('site_id');
 	}
@@ -36,19 +34,19 @@ class Limitee_ext {
 	/**
 	 * Settings form
 	 *
-	 * @param  array Settings
-	 * @return void
+	 * @param  array $current settings
 	 */
-	public function settings_form($current)
-	{
+	public function settings_form($current) {
 		ee()->load->helper(array('html', 'form'));
 		ee()->load->model('limitee_model');
 
-		$fields = ee()->limitee_model->get_fields($this->site_id);
+		$fields = ee()->limitee_model->getFields($this->site_id);
 
 		$values = array(
-			'settings' => isset($current[$this->site_id]) ? $current[$this->site_id] : array(),
-			'channel_fields' => $fields
+			'settings' => isset($current[$this->site_id]) ?
+				$current[$this->site_id] :
+				array(),
+			'channelFields' => $fields
 		);
 
 		return ee()->load->view('limitee_settings', $values, true);
@@ -56,31 +54,33 @@ class Limitee_ext {
 
 	/**
 	 * Save Settings
-	 *
-	 * @return void
 	 */
-	public function save_settings()
-	{
+	public function save_settings() {
 		unset($_POST['submit']);
 
 		// Associate the posted settings with the current site ID
 		$this->settings[$this->site_id] = $_POST;
 
 		// Update the settings
-		if (ee()->db->update('extensions', array('settings' => serialize($this->settings)), "class = 'Limitee_ext'")) {
-			ee()->session->set_flashdata('message_success', ee()->lang->line('preferences_updated'));
+		if (ee()->db->update('extensions', array(
+			'settings' => serialize($this->settings)), "class = 'Limitee_ext'")
+		) {
+			ee()->session->set_flashdata(
+				'message_success',
+				ee()->lang->line('preferences_updated')
+			);
 		} else {
-			ee()->session->set_flashdata('message_error', ee()->lang->line('update_failed'));
+			ee()->session->set_flashdata(
+				'message_error',
+				ee()->lang->line('update_failed')
+			);
 		}
 	}
 
 	/**
 	 * Activate Extension
-	 *
-	 * @return void
 	 */
-	public function activate_extension()
-	{
+	public function activate_extension() {
 		ee()->db->insert('extensions', array(
 			'class' => __CLASS__,
 			'method' => 'publish_form_entry_data',
@@ -95,12 +95,11 @@ class Limitee_ext {
 	/**
 	 * Update Extension
 	 *
+	 * @param string $current
 	 * @return mixed void on update / false if none
 	 */
-	public function update_extension($current = '')
-	{
-		if ($current == $this->version)
-		{
+	public function update_extension($current = '') {
+		if ($current === $this->version) {
 			return false;
 		}
 
@@ -109,11 +108,8 @@ class Limitee_ext {
 
 	/**
 	 * Disable Extension
-	 *
-	 * @return void
 	 */
-	public function disable_extension()
-	{
+	public function disable_extension() {
 		ee()->db->where('class', __CLASS__);
 		ee()->db->delete('extensions');
 	}
@@ -122,55 +118,64 @@ class Limitee_ext {
 	* Bind Links
 	*
 	* @param array $data
-	* @return array $data
+	* @return array
 	*/
-	function publish_form_entry_data($data)
-	{
+	function publish_form_entry_data($data) {
 		if (! isset($this->settings[$this->site_id])) {
 			return $data;
 		}
 
-		ee()->load->helper('array');
 		ee()->cp->load_package_js('base');
 
 		ee()->session->cache['limitee']['require_scripts'] = true;
 
 		if (isset(ee()->session->cache['limitee']['require_scripts']) === true) {
+			ee()->load->model('limitee_model');
+
 			$wrapper = '';
 			$js = '';
 
-			$count_settings = $this->settings[$this->site_id]['rules'];
+			$countSettings = $this->settings[$this->site_id]['rules'];
 
-			$channel_id = isset($data['channel_id']) ? $data['channel_id'] : $_GET['channel_id'];
+			$channelId = isset($data['channel_id']) ?
+				$data['channel_id'] :
+				$_GET['channel_id'];
 
-			foreach ($count_settings as $key => $val) {
+			// Get field group ID
+			$fieldGroupId = ee()->limitee_model->getFieldGroupId($channelId);
+
+			foreach ($countSettings as $key => $val) {
 				$max = $val['max'];
-				$type = $val['type'];
 
 				if ($max !== '') {
-					$selector = ($key == 'group_title_' . $channel_id) ? '"title"' : '"field_id_' . $key . '"';
+					$type = $val['type'];
 
-					$js .= '$(\'[name=' . $selector . ']\').limiter(' . $max . ',' . $type . ')' . "\n";
+					$selector = $key === 'title_' . $fieldGroupId || $key === 'group_title_' . $channelId ?
+						'"title"' :
+						'"field_id_' . $key . '"';
+
+					$js .= '$(\'[name=' . $selector . ']\')
+						.limitee(' . $max . ',' . $type . ');';
 				}
 			}
 
-			if ($js != '') {
-				$wrapper .= '$(function() {' . "\n\n" . $js . "\n" . '});' . "\n";
+			if ($js !== '') {
+				$wrapper .= '$(function() {' . $js . '});';
 			}
 
 			ee()->cp->add_to_foot('<script>' . $wrapper . '</script>');
 		}
 
 		ee()->cp->add_to_head('
-			<style type="text/css">
+			<style>
 			.limitee {
-				font-size: 11px;
-				float: left;
 				clear: left;
+				float: left;
+				font-size: 11px;
 				padding: 6px 0 0 2px;
 			}
-			.limitee-over {
-				color: #E11842;
+			.limitee.-is-over {
+				color: #f00;
 			}
 			</style>
 		');

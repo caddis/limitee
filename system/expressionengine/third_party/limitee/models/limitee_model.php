@@ -5,28 +5,65 @@
  *
  * @package Limitee
  * @author  Caddis
- * @link    http://www.caddis.co
+ * @link    https://www.caddis.co
  */
 
-class Limitee_model extends CI_Model {
-
-	public function __construct()
-	{
+class Limitee_model extends CI_Model
+{
+	public function __construct() {
 		parent::__construct();
 	}
 
-	public function get_fields($site_id)
-	{
-		$query = $this->db->select('C.channel_id, CF.field_id, CF.field_label, CF.field_maxl, CF.site_id, CF.field_type, FG.group_name, FG.group_id')
-			->from('channels C')
-			->join('field_groups FG', 'FG.group_id = C.field_group')
-			->join('channel_fields CF', 'FG.group_id = CF.group_id', 'right')
-			->where('C.site_id', $site_id)
-			->group_by('CF.field_id')
-			->order_by('FG.group_name ASC, CF.field_label ASC')
+	/**
+	 * Get field settings from database
+	 *
+	 * @param int $siteId
+	 * @return array
+	 */
+	public function getFields($siteId) {
+		$results = $this->db->select('
+				channels.channel_id,
+				fields.field_id,
+				fields.field_label,
+				fields.field_maxl,
+				fields.site_id,
+				fields.field_type,
+				groups.group_name,
+				groups.group_id
+			')
+			->from('channels')
+			->join(
+				'field_groups AS groups',
+				'groups.group_id = channels.field_group'
+			)
+			->join(
+				'channel_fields AS fields',
+				'groups.group_id = fields.group_id',
+				'right'
+			)
+			->where('channels.site_id', $siteId)
+			->group_by('fields.field_id')
+			->order_by('
+				groups.group_name ASC,
+				fields.field_label ASC
+			')
 			->get()
 			->result();
 
-		return $query;
+		return $results;
+	}
+
+	/**
+	 * Get field group ID from channel ID
+	 *
+	 * @param int $channelId
+	 * @return string
+	 */
+	public function getFieldGroupId($channelId) {
+		return $this->db->select('field_group')
+			->from('channels')
+			->where('channels.channel_id', $channelId)
+			->get()
+			->row('field_group');
 	}
 }
