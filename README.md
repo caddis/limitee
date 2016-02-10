@@ -1,4 +1,4 @@
-# Limitee 1.0.5
+# Limitee 1.1.0
 
 Limit ExpressionEngine titles, text input field types, and textarea field types to a specific character count, with a counter to let you know how many characters are remaining. Our thanks to [MD Character Count] for the inspiration behind this add-on.
 
@@ -28,18 +28,7 @@ A hard limit will still present a character count below the field as with soft l
 
 ![Entry](http://files.caddis.co/addons/limitee/publish.jpg)
 
+
 ## License
 
-Copyright 2014 Caddis Interactive, LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Copyright 2016 [Caddis Interactive, LLC](https://www.caddis.co). Licensed under the [Apache License, Version 2.0](https://github.com/caddis/limitee/blob/master/LICENSE).
